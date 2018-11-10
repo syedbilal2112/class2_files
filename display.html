@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+<script type="text/javascript" src="jquery.min.js"></script>
+</head>
+<body>
+<form>
+	<input type="text" id="name" name="name" placeholder="enter your name">
+	<input type="email" id="email" name="email" placeholder="entert your email">
+	<input type="password" id="password" name="password" placeholder="enter your password">
+	<button id="btn" type="button">Submit</button>
+</form>
+<table id="Table">
+	<tr>
+		<th>Id</th>
+		<th>Name</th>
+		<th>Email</th>
+		<th>Password</th>
+	</tr>
+</table>
+<script type="text/javascript">
+	$(function(){
+		$('#btn').click(function(){
+			var name=$('#name').val();
+			var email=$('#email').val();
+			var password=$('#password').val();
+		alert(name)
+		$.ajax({
+                    url:'register.php',
+                    type:'post',
+                    data:{
+                      "name1":name,
+                      "email" : email,
+                      "password": password
+                    },
+                    success:function(){
+                      alert('Inserted')
+                    },
+                    error:function(){
+                      alert('Error')
+                    }
+                  })
+		})
+		
+	})
+</script>
+</body>
+</html>
