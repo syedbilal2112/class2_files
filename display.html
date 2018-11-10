@@ -12,18 +12,24 @@
 </head>
 <body>
 <form>
-	<input type="text" id="name" name="name" placeholder="enter your name">
-	<input type="email" id="email" name="email" placeholder="entert your email">
-	<input type="password" id="password" name="password" placeholder="enter your password">
-	<button id="btn" type="button">Submit</button>
-</form>
-<table id="Table">
+	<input class="form-control" type="text" id="name" name="name" placeholder="enter your name"><br>
+	<input class="form-control" type="email" id="email" name="email" placeholder="entert your email"><br>
+	<input class="form-control" type="password" id="password" name="password" placeholder="enter your password"><br>
+	<button id="btn" type="button" class="btn btn-primary">Submit</button>
+</form><br>
+<table id="Table" class="table table-hover">
 	<tr>
 		<th>Id</th>
 		<th>Name</th>
 		<th>Email</th>
 		<th>Password</th>
 		<th>Action</th>
+	</tr>
+	<tr>
+		<td>lkjhgf</td>
+		<td>lkjhgf</td>
+		<td>lkjhgf</td>
+		<td>lkjhgf</td>
 	</tr>
 </table>
 
@@ -38,11 +44,11 @@
 
 				},
 				success: function(response){
-					
+					alert('hi')
 					var obj=JSON.parse(response);
 
                         var table_content=""
-                        $('#history_display').find( 'tr:not(:first)' ).remove();
+                        $('#Table').find( 'tr:not(:first)' ).remove();
                         $.each(obj,function(index,value){
                             table_content+="<tr>";
                             table_content+="<td>"+value.id+"</td>";
@@ -52,7 +58,7 @@
   table_content+="<td><a class='btn btn-primary' href='edit.php?id="+value.id+"'>Edit</a><button class='btn btn-danger' onclick='dele("+value.id+")'>Delete</button><button class='btn btn-primary' onclick='view("+value.id+")'>View</button></td>";
                             table_content+="</tr>";
                         });
-                        $("#history_display").append(table_content);
+                        $("#Table").append(table_content);
 				},
 				error: function(){
 					alert('Something went wrong');
