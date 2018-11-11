@@ -11,10 +11,26 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+	<?php 
+	$id=$_GET['id'];
+	include 'conn.php';
+	$query="SELECT * FROM `users` WHERE `id`='$id'";
+	$result=mysqli_query($con,$query);
+	while($row=mysqli_fetch_assoc($result)){
+		$id=$row['id'];
+		$name=$row['name'];
+		$email=$row['email'];
+		$password=$row['password'];
+	}
+	?>
 <form>
-	<input class="form-control" type="text" id="name" name="name" placeholder="enter your name"><br>
-	<input class="form-control" type="email" id="email" name="email" placeholder="entert your email"><br>
-	<input class="form-control" type="password" id="password" name="password" placeholder="enter your password"><br>
+	<input type="hidden" name="id" id="id" value="<?php echo $id;?>">
+
+	<input class="form-control" type="text" id="name" name="name" placeholder="enter your name" value="<?php echo $name;?>"><br>
+
+	<input class="form-control" type="email" id="email" name="email" placeholder="entert your email" value="<?php echo $email;?>"><br>
+
+	<input class="form-control" type="password" id="password" name="password" placeholder="enter your password" value="<?php echo $password;?>"><br>
 	<button id="btn" type="button" class="btn btn-primary">Submit</button>
 </form><br>
 <table id="Table" class="table table-hover">
@@ -34,32 +50,6 @@
 </table>
 
 
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">User Details</h4>
-        </div>
-        <div class="modal-body">
-          <label> Name</label>
-          <input  class="form-control" disabled type="text" id="name1" name="name"><br>
-	<label> Email</label>
-	<input  class="form-control" disabled type="email" id="email1" name="email"><br>
-	<label> Password</label><input  class="form-control" disabled type="password" id="password1" name="password"><br>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-
-
 <script type="text/javascript">
 	function dele(id){
 		alert(id)
@@ -77,29 +67,31 @@
             }
           })
 	}
-		function view(id){
-	$.ajax({
-        url:'view1.php',
-        type:'post',
-        data:{
-			"id":id
-		},
-		success: function(data){
-			var obj=JSON.parse(data);
-			alert(data)
-               $.each(obj,function(index,value){
-			 $('#name1').val(value.name);
-			 $('#email1').val(value.email);
-			 $('#password1').val(value.password);
-			$('#myModal').modal('show');
-		});
-		},
-		error:function(){
-			alert('not right')
-		}
-      })
-	}
 		$(function(){
+
+		$('#btn').click(function(){
+			var id=$('#id').val();
+			var name=$('#name').val();
+			var email=$('#email').val();
+			var password=$('#password').val();
+		alert(name)
+		$.ajax({
+                    url:'update.php',
+                    type:'post',
+                    data:{
+                      "name":name,
+                      "email" : email,
+                      "password": password,
+                      "id":id
+                    },
+                    success:function(){
+                      alert('Inserted')
+                    },
+                    error:function(){
+                      alert('Error')
+                    }
+                  })
+		})
 
 			$.ajax({
 				url:'view.php',
