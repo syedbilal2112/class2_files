@@ -21,6 +21,7 @@
 		$name=$row['name'];
 		$email=$row['email'];
 		$password=$row['password'];
+		$profile_pic=$row['profile_pic'];
 	}
 	?>
 <form>
@@ -31,8 +32,15 @@
 	<input class="form-control" type="email" id="email" name="email" placeholder="entert your email" value="<?php echo $email;?>"><br>
 
 	<input class="form-control" type="password" id="password" name="password" placeholder="enter your password" value="<?php echo $password;?>"><br>
+
+	<img src="<?php echo $profile_pic?>" id="profile_pic" width="150px" height="150px" style="border-radius: 50%">
+    <input type="file" name="files[]" id="file"  required/>
+    <br>
+     <button type="button" id="upload_profile_pic" class="btn btn-primary ">Update Pic</button>
+
 	<button id="btn" type="button" class="btn btn-primary">Submit</button>
 </form><br>
+
 <table id="Table" class="table table-hover">
 	<tr>
 		<th>Id</th>
@@ -68,6 +76,54 @@
           })
 	}
 		$(function(){
+				$('#file').on('change', function () {
+                    var file_data = $('#file').prop('files')[0];
+                    var form_data = new FormData();
+                    form_data.append('file', file_data);
+                    form_data.append('id', 1);
+                    $.ajax({
+                        url: 'upload.php', // point to server-side PHP script 
+                        dataType: 'text', // what to expect back from the PHP script
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: form_data,
+                        type: 'post',
+                        success: function (response) {
+                        
+                            alert(response)
+                            document.getElementById("profile_pic").src=response;
+                            x=response;
+
+                           
+                        },
+                        error: function (response) {
+                          
+                           alert(response);
+                        }
+                    });
+               });
+			$('#upload_profile_pic').on('click', function () {
+                  var id=$("#id").val();
+                  var profile=x;
+                   
+	                $.ajax({
+	                    url:"update_profile_pic.php",
+	                    type:"post",
+	                    data:{
+	                        "id":id,
+	                        "profile":profile
+	                    },
+	                    success:function(data){
+	                      alert(data);
+	                     // window.reload();   
+	                      },
+	                      error:function(){
+	                        alert(';hi');
+	                      }
+	        		});
+           
+      });
 
 		$('#btn').click(function(){
 			var id=$('#id').val();
@@ -100,7 +156,6 @@
 
 				},
 				success: function(response){
-					alert('hi')
 					var obj=JSON.parse(response);
 
                         var table_content=""
